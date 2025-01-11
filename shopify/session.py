@@ -53,10 +53,11 @@ class Session(object):
         self.access_scopes = access_scopes
         return
 
-    def create_permission_url(self, scope, redirect_uri, state=None):
-        query_params = dict(client_id=self.api_key, scope=",".join(scope), redirect_uri=redirect_uri)
-        if state:
-            query_params["state"] = state
+    def create_permission_url(self,  redirect_uri, scope=None, state=None):
+        query_params = dict(client_id=self.api_key, redirect_uri=redirect_uri)
+        # `scope` should be omitted if provided by app's TOML
+        if scope: query_params["scope"] = ",".join(scope)
+        if state: query_params["state"] = state
         return "https://%s/admin/oauth/authorize?%s" % (self.url, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):

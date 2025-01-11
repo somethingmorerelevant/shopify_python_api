@@ -66,10 +66,12 @@ pip install --upgrade ShopifyAPI
     api_version = '2024-07'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
+    # `scope` should be omitted if provided by app's TOML
     scopes = ['read_products', 'read_orders']
 
     newSession = shopify.Session(shop_url, api_version)
-    auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
+    # `scope` should be omitted if provided by app's TOML
+    auth_url = newSession.create_permission_url(redirect_uri, scopes, state)
     # redirect to auth_url
     ```
 
