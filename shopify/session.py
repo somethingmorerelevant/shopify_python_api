@@ -54,7 +54,7 @@ class Session(object):
         return
 
     def create_permission_url(self, redirect_uri, scope=None, state=None):
-        query_params = dict(client_id=self.api_key, redirect_uri=redirect_uri)
+        query_params = {"client_id": self.api_key, "redirect_uri": redirect_uri}
         # `scope` should be omitted if provided by app's TOML
         if scope: query_params["scope"] = ",".join(scope)
         if state: query_params["state"] = state
@@ -70,7 +70,7 @@ class Session(object):
         code = params["code"]
 
         url = "https://%s/admin/oauth/access_token?" % self.url
-        query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
+        query_params = {"client_id": self.api_key, "client_secret": self.secret, "code": code}
         request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode("utf-8"))
         response = urllib.request.urlopen(request)
 
